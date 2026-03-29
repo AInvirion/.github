@@ -1,0 +1,54 @@
+name: CLA Assistant (Reusable)
+
+on:
+  workflow_call:
+    secrets:
+      CLA_TOKEN:
+        required: true
+        description: "PAT with Contents and Pull requests write access"
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  cla:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CLA Assistant
+        if: |
+          github.event.comment.body == 'recheck' ||
+          github.event.comment.body == 'I have read the Contributor Assignment Agreement and I hereby accept the terms.' ||
+          github.event_name == 'pull_request_target'
+        uses: contributor-assistant/github-action@v2.6.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.CLA_TOKEN }}
+        with:
+          path-to-signatures: "signatures/cla.json"
+          path-to-document: "https://gist.github.com/oscarvalenzuelab/1d635e89f93b86338985b7cebb1596ac"
+          branch: "main"
+          allowlist: "oscarvalenzuelab,dependabot[bot],github-actions[bot]"
+          custom-notsigned-prcomment: |
+            Thank you for your contribution to AInvirion! Before we can review and merge your pull request, we need you to sign our Contributor Assignment Agreement (CAA).
+
+            **To sign the CAA:**
+
+            1. Review the agreement: [AInvirion Contributor Assignment Agreement](https://gist.github.com/oscarvalenzuelab/1d635e89f93b86338985b7cebb1596ac)
+            2. Reply to this PR with the following statement:
+
+            > I have read the Contributor Assignment Agreement and I hereby accept the terms.
+
+            **Important:** By posting this statement, you certify that:
+            - You have read and understood the CAA
+            - You agree to assign all intellectual property rights in your contributions to AInvirion LLC
+            - You have the legal right to make this assignment
+            - If employed, your employer has waived rights or you are contributing outside the scope of employment
+
+            Once you post your acceptance, we'll review your contribution. Thank you!
+
+            ---
+
+            Questions? Contact legal@ainvirion.com
+          custom-pr-sign-comment: "I have read the Contributor Assignment Agreement and I hereby accept the terms."
