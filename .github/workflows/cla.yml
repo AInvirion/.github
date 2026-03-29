@@ -28,7 +28,7 @@ jobs:
         with:
           path-to-signatures: "signatures/cla.json"
           path-to-document: "https://gist.github.com/oscarvalenzuelab/1d635e89f93b86338985b7cebb1596ac"
-          branch: "main"
+          branch: "cla-signatures"
           allowlist: "oscarvalenzuelab,diegojorquera,dependabot[bot],github-actions[bot]"
           custom-notsigned-prcomment: |
             Thank you for your contribution to AInvirion! Before we can review and merge your pull request, we need you to sign our Contributor Assignment Agreement (CAA).
